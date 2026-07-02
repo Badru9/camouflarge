@@ -23,6 +23,12 @@ func _on_join_button_pressed() -> void:
 	if err == OK:
 		start_button.visible = false
 
+func _on_local_play_pressed() -> void:
+	MultiplayerManager.local_player_name = name_input.text if name_input.text != "" else "LocalPlayer"
+	var err = MultiplayerManager.host_game()
+	if err == OK:
+		get_tree().change_scene_to_file("res://scenes/main.tscn")
+
 func _update_player_list() -> void:
 	player_list.clear()
 	for id in MultiplayerManager.players:

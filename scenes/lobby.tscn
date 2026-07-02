@@ -79,6 +79,11 @@ visible = false
 layout_mode = 2
 text = "Mulai Permainan (Host)"
 
+[node name="LocalPlayButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Local Play (Single Instance)"
+
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/LocalPlayButton" to="." method="_on_local_play_pressed"]

@@ -1,23 +1,29 @@
-extends Node
+extends Node3D
 
-@onready var viewport1: SubViewport = $GridContainer/ViewportContainer1/Viewport1
-@onready var viewport2: SubViewport = $GridContainer/ViewportContainer2/Viewport2
+@onready var map_node = $Map
 
 func _ready() -> void:
-	# Pastikan Viewport 2 membagikan World3D yang sama dengan Viewport 1
-	viewport2.world_3d = viewport1.world_3d
+	if not multiplayer.is_server():
+		return
+		
+	# Sambungkan event join/leave baru jika ada pemain yang menyusul saat game berjalan
+	multiplayer.peer_connected.connect(add_player)
+	multiplayer.peer_disconnected.connect(remove_player)
 	
-	# Instantiate player 1 di Viewport 1
-	var player1 = preload("res://scenes/player.tscn").instantiate()
-	player1.player_id = 1
-	player1.name = "Player1"
-	player1.position = Vector3(-2, 1, 0)
-	viewport1.get_node("Map").add_child(player1)
-	
-	# Instantiate player 2 di Viewport 2 (berbagi world_3d yang sama)
-	var player2 = preload("res://scenes/player.tscn").instantiate()
-	player2.player_id = 2
-	player2.name = "Player2"
-	player2.position = Vector3(2, 1, 0)
-	viewport2.add_child(player2)
+	# Spawn player untuk semua yang ada di lobby saat ini
+	for id in MultiplayerManager.players:
+		add_player(id)
 
+func add_player(id: int) -> void:
+	var player = preload("res://scenes/player.tscn").instantiate()
+	player.name = str(id)
+	
+	# Tentukan posisi spawn acak atau berdasarkan id
+	var spawn_offset = randf_range(-4.0, 4.0)
+	player.position = Vector3(spawn_offset, 1.0, spawn_offset - 4.0)
+	
+	add_child(player, true)
+
+func remove_player(id: int) -> void:
+	if has_node(str(id)):
+		get_node(str(id)).queue_free()

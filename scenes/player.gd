@@ -28,6 +28,21 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed(move_back):
 		input_dir.y += 1.0
 
+	# Rotasi horizontal sederhana dengan keyboard
+	var rotation_dir := 0.0
+	if player_id == 1:
+		if Input.is_key_pressed(KEY_Q):
+			rotation_dir += 1.0
+		if Input.is_key_pressed(KEY_R):
+			rotation_dir -= 1.0
+	elif player_id == 2:
+		if Input.is_key_pressed(KEY_Y):
+			rotation_dir += 1.0
+		if Input.is_key_pressed(KEY_P):
+			rotation_dir -= 1.0
+	
+	rotate_y(rotation_dir * 2.5 * delta)
+
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * speed

@@ -3,13 +3,41 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(50, 1, 50)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.25, 0.4, 0.25, 1.0)
+
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
+material = SubResource("StandardMaterial3D_floor")
 size = Vector3(50, 1, 50)
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
-background_color = Color(0.2, 0.2, 0.2, 1.0)
+background_color = Color(0.2, 0.3, 0.4, 1.0)
 ambient_light_color = Color(0.8, 0.8, 0.8, 1.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red"]
+albedo_color = Color(0.8, 0.2, 0.2, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_red"]
+material = SubResource("StandardMaterial3D_red")
+size = Vector3(1.5, 1.5, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_green"]
+albedo_color = Color(0.2, 0.8, 0.2, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_green"]
+material = SubResource("StandardMaterial3D_green")
+size = Vector3(1.5, 1.5, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blue"]
+albedo_color = Color(0.2, 0.2, 0.8, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_blue"]
+material = SubResource("StandardMaterial3D_blue")
+size = Vector3(1.5, 1.5, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cube"]
+size = Vector3(1.5, 1.5, 1.5)
 
 [node name="Map" type="Node3D"]
 
@@ -28,3 +56,31 @@ shape = SubResource("BoxShape3D_floor")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D_Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 mesh = SubResource("BoxMesh_floor")
+
+[node name="Cube_Red" type="StaticBody3D" parent="." groups=["InteractableProps"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube_Red"]
+shape = SubResource("BoxShape3D_cube")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cube_Red"]
+mesh = SubResource("BoxMesh_red")
+
+[node name="Cube_Green" type="StaticBody3D" parent="." groups=["InteractableProps"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.75, -8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube_Green"]
+shape = SubResource("BoxShape3D_cube")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cube_Green"]
+mesh = SubResource("BoxMesh_green")
+
+[node name="Cube_Blue" type="StaticBody3D" parent="." groups=["InteractableProps"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.75, -8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube_Blue"]
+shape = SubResource("BoxShape3D_cube")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cube_Blue"]
+mesh = SubResource("BoxMesh_blue")
+

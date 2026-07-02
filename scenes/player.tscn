@@ -1,15 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cplayer123"]
+[gd_scene format=3 uid="uid://cplayer123"]
 
-[ext_resource type="Script" path="res://scenes/player.gd" id="1_script"]
-[ext_resource type="Script" path="res://components/prop_transformer.gd" id="2_prop_transformer"]
+[ext_resource type="Script" uid="uid://djejcalwunpqu" path="res://scenes/player.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cyus6yw03cudr" path="res://components/prop_transformer.gd" id="2_prop_transformer"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
-radius = 0.5
-height = 2.0
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_1"]
-radius = 0.5
-height = 2.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1"]
 properties/0/path = NodePath(".:position")
@@ -25,27 +21,26 @@ properties/3/path = NodePath(".:current_prop_name")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" unique_id=2033371945]
 script = ExtResource("1_script")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1304143540]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_1")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1287140070]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_1")
 
-[node name="CameraPivot" type="Node3D" parent="."]
+[node name="CameraPivot" type="Node3D" parent="." unique_id=1957331554]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+[node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=1914571954]
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="RayCast3D" type="RayCast3D" parent="CameraPivot" unique_id=624440551]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=706671217]
 replication_config = SubResource("SceneReplicationConfig_1")
 
-[node name="PropTransformer" type="Node3D" parent="."]
+[node name="PropTransformer" type="Node3D" parent="." unique_id=1939152490]
 script = ExtResource("2_prop_transformer")
-
-[node name="RayCast3D" type="RayCast3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)

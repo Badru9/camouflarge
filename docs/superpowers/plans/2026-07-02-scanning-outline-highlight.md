@@ -1,3 +1,33 @@
+# Scanning Outline Highlight Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Menambahkan efek visual *highlight* (sorotan warna transparan) pada objek 3D ketika didekati dan ditunjuk oleh pemain Prop menggunakan `material_overlay` bawaan Godot 4.
+
+**Architecture:** Modifikasi `prop_transformer.gd` untuk mendeteksi perubahan target raycast. Saat mendeteksi target valid baru, komponen akan memuat material hologram kuning transparan dan memasangnya ke properti `material_overlay` dari `MeshInstance3D` milik objek tersebut. Saat pandangan beralih, overlay dibersihkan kembali ke `null`.
+
+**Tech Stack:** Godot Engine 4.7, GDScript, StandardMaterial3D (material_overlay).
+
+## Global Constraints
+
+- Proyek berjalan pada Godot 4.7.
+- Seluruh script diletakkan di bawah folder yang telah ditentukan.
+
+---
+
+### Task 1: Implement Dynamic Highlight Overlay
+
+**Files:**
+- Modify: `components/prop_transformer.gd`
+
+**Interfaces:**
+- Produces: Logika otomatis untuk memasang/melepas highlight material pada mesh objek target ketika disorot RayCast3D.
+
+- [ ] **Step 1: Modifikasi `components/prop_transformer.gd` untuk menambahkan logika highlight**
+
+Buka `components/prop_transformer.gd` dan tambahkan instansiasi material highlight di `_ready()` serta kelola target sorotan pada `_physics_process()`.
+
+```gdscript
 extends Node3D
 
 signal scan_started
@@ -115,3 +145,11 @@ func _cancel_scan() -> void:
 func _exit_tree() -> void:
 	if current_highlighted_mesh and is_instance_valid(current_highlighted_mesh):
 		current_highlighted_mesh.material_overlay = null
+```
+
+- [ ] **Step 2: Commit perubahan highlight**
+
+```bash
+git add components/prop_transformer.gd
+git commit -m "feat: add real-time material overlay highlight on raycast targets"
+```

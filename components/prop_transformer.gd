@@ -13,7 +13,7 @@ var current_scan_target: Node3D = null
 var scan_timer: float = 0.0
 var is_scanning: bool = false
 
-@onready var raycast: RayCast3D = $RayCast3D
+@onready var raycast: RayCast3D = $"../CameraPivot/RayCast3D"
 
 func _ready() -> void:
 	# Raycast dikonfigurasi mengarah ke depan (Z negatif)

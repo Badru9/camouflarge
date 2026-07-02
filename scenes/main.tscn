@@ -28,8 +28,6 @@ render_target_update_mode = 4
 
 [node name="Map" parent="GridContainer/ViewportContainer1/Viewport1" instance=ExtResource("2_map_scene")]
 
-[node name="Camera3D" type="Camera3D" parent="GridContainer/ViewportContainer1/Viewport1"]
-
 [node name="ViewportContainer2" type="SubViewportContainer" parent="GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -41,5 +39,4 @@ handle_input_locally = false
 size = Vector2i(574, 648)
 render_target_update_mode = 4
 
-[node name="Camera3D" type="Camera3D" parent="GridContainer/ViewportContainer2/Viewport2"]
 

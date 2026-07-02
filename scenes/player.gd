@@ -17,6 +17,11 @@ func _ready() -> void:
 	if is_multiplayer_authority():
 		camera.make_current()
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
+		# Instantiate UI HUD
+		var ui = preload("res://scenes/ui.tscn").instantiate()
+		add_child(ui)
+		ui.setup_ui($PropTransformer)
 	else:
 		camera.visible = false
 

@@ -4,6 +4,11 @@ extends CharacterBody3D
 @export var jump_velocity: float = 4.5
 @export var mouse_sensitivity: float = 0.003
 
+@export var current_prop_name: String = "":
+	set(val):
+		current_prop_name = val
+		_on_prop_name_changed(val)
+
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var camera_pivot: Node3D = $CameraPivot
@@ -66,3 +71,47 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, speed)
 
 	move_and_slide()
+
+# Panggil dari UI klien lokal
+func request_transformation(prop_name: String) -> void:
+	rpc_id(1, "server_request_transformation", prop_name)
+
+@rpc("any_peer", "reliable")
+func server_request_transformation(prop_name: String) -> void:
+	if not multiplayer.is_server():
+		return
+		
+	# Set variabel di server agar disinkronkan oleh MultiplayerSynchronizer
+	current_prop_name = prop_name
+
+# Menerima update nama prop untuk memperbarui mesh & collision lokal
+func _on_prop_name_changed(prop_name: String) -> void:
+	# Cari objek temp sebelumnya dan hapus jika ada
+	for child in get_children():
+		if child.name.begins_with("TempProp_"):
+			child.queue_free()
+			
+	if prop_name == "":
+		# Kembalikan ke wujud capsule asli
+		$MeshInstance3D.visible = true
+		$CollisionShape3D.disabled = false
+		return
+		
+	# Sembunyikan mesh capsule asli
+	$MeshInstance3D.visible = false
+	
+	# Cari data objek prop yang sesuai di PropTransformer (client mengambil dari dictionary catalog)
+	var transformer = $PropTransformer
+	if transformer and transformer.scanned_props.has(prop_name):
+		var prop_data = transformer.scanned_props[prop_name]
+		
+		# Buat visual mesh baru
+		var temp_mesh = MeshInstance3D.new()
+		temp_mesh.name = "TempProp_Mesh"
+		temp_mesh.mesh = prop_data["mesh"]
+		temp_mesh.position = Vector3(0, prop_data["height_offset"], 0)
+		add_child(temp_mesh)
+		
+		# Ganti collision shape agar pas dengan objek baru
+		$CollisionShape3D.shape = prop_data["shape"]
+		$CollisionShape3D.position = Vector3(0, prop_data["height_offset"], 0)
